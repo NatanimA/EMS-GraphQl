@@ -1,0 +1,46 @@
+type User {
+    name: String!
+    email: String!
+    password: String!
+    Events: [Event!]!
+    Invites: [Invite!]!
+}
+
+type Invite {
+    eventId: Int!
+    User: User!
+    status: Boolean!
+    owner: String!
+}
+
+type Event {
+    id: Int!
+    name: String!
+    description: String!
+    User: User!
+    Members: [Member!]!
+}
+
+type Member {
+    Event: Event!
+    User: User!
+}
+
+type Mutation {
+    registerUser(name: String!,password: String!, email:String!): User!
+    authenticateUser(email: String!, password: String!): User!
+    updatePassword(id: Int!,newPassword: String!,oldPassword:String!): User!
+    resetPassword(email: String!,name: String!): User!
+    createEvents(userId: Int!, name: String!,description: String!): Event!
+    updateEvent(id: Int!,userId: Int!, name: String!,description: String!): Event!
+    createInvite(email: String!,userId: Int!, eventId: Int!): Invite!
+    acceptInvite(id: Int!, userId: Int!): Member!
+    rejectInvite(id: Int!, userId: Int!): String!
+}
+
+type Query {
+    userEvents(id: Int!): [Event!]!
+    detailEvent(id: Int!): Event!
+    searchEvents(name: String!): [Event!]!
+    paginateEvents(page: Int!, limit: Int!): [Event!]!
+}
